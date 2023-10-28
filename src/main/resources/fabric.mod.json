@@ -1,12 +1,13 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "farlanders",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This mod aims to help new BTA modders.",
+  "name": "Farlanders",
+  "description": "This mod adds new scary monsters to BTA!",
   "authors": [
-    "Turnip Labs"
+    "Turnip Labs",
+		"Cookie Cakes"
   ],
   "contact": {
     "homepage": "",
@@ -18,11 +19,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-        "turniplabs.examplemod.ExampleMod"
+			"turniplabs.farlanders.Farlanders"
     ]
   },
   "mixins": [
-      "examplemod.mixins.json"
+    "farlanders.mixins.json"
   ],
 
   "depends": {
