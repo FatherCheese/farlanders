@@ -4,6 +4,7 @@
   "package": "turniplabs.farlanders.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BiomeMixin",
     "MinecraftMixin"
   ],
   "client": [
