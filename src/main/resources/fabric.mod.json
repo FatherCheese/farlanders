@@ -4,9 +4,8 @@
   "version": "${version}",
 
   "name": "Farlanders",
-  "description": "This mod adds new scary monsters to BTA!",
+  "description": "This mod adds new monsters to scare you.",
   "authors": [
-    "Turnip Labs",
 		"Cookie Cakes"
   ],
   "contact": {
@@ -14,6 +13,7 @@
     "sources": ""
   },
 
+	"icon": "assets/farlanders/icon.png",
   "license": "CC0-1.0",
 
   "environment": "*",

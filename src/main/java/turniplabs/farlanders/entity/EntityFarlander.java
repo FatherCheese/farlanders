@@ -10,8 +10,7 @@ import net.minecraft.core.world.World;
 import turniplabs.farlanders.util.FarlanderUtils;
 
 public class EntityFarlander extends EntityMonster {
-	private final EntityPlayer player = Minecraft.getMinecraft(this).thePlayer;
-
+	private EntityPlayer player;
 	private boolean angry = false;
 	private int soundTicks = 0;
 	private int ticksNotLooking = 0;
@@ -44,7 +43,7 @@ public class EntityFarlander extends EntityMonster {
 		}
 	}
 
-	private void randomTP(int x, int y, int z) {
+	public void randomTP(int x, int y, int z) {
 		int randX = 0;
 		int randY = 0;
 		int randZ = 0;
@@ -69,6 +68,8 @@ public class EntityFarlander extends EntityMonster {
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
+
+		player = world.getClosestPlayerToEntity(this, 32.0);
 
 		if (soundTicks > 0 && soundTicks <= 540)
             --soundTicks;
@@ -151,10 +152,5 @@ public class EntityFarlander extends EntityMonster {
 	@Override
 	protected Entity findPlayerToAttack() {
 		return angry ? player : null;
-	}
-
-	@Override
-	public void onDeath(Entity entity) {
-		super.onDeath(entity);
 	}
 }

@@ -1,15 +1,12 @@
 package turniplabs.farlanders.entity;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntityMonster;
 import net.minecraft.core.entity.player.EntityPlayer;
-import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.world.World;
 import turniplabs.farlanders.util.FarlanderUtils;
 
 public class EntityEyes extends EntityMonster {
-	private final EntityPlayer player = Minecraft.getMinecraft(this).thePlayer;
 	private int stareTimer = 0;
 	private int soundTimer = 0;
 	private boolean found = false;
@@ -28,22 +25,25 @@ public class EntityEyes extends EntityMonster {
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 
-		if (player != null)
+		EntityPlayer player = world.getClosestPlayerToEntity(this, 16.0);
+
+		if (player != null) {
 			this.yRot = player.yRot + 180;
 
-		if (found)
-			++stareTimer;
+			if (found)
+				++stareTimer;
 
-		if (FarlanderUtils.isStaredAt(this, player) && player.gamemode != Gamemode.creative) {
-			found = true;
+			if (FarlanderUtils.isStaredAt(this, player) && player.getGamemode().areMobsHostile) {
+				found = true;
 
-			if (soundTimer == 0) {
-				world.playSoundAtEntity(player, "ambient.cave.cave", 1.0f, 1.0f);
-				soundTimer = 1;
+				if (soundTimer == 0) {
+					world.playSoundAtEntity(player, "ambient.cave.cave", 1.0f, 1.0f);
+					soundTimer = 1;
+				}
+
+				if (stareTimer > 25)
+					this.remove();
 			}
-
-			if (stareTimer > 25)
-				this.remove();
 		}
 	}
 
