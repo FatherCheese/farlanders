@@ -124,7 +124,6 @@ public class EntityFarlander extends EntityMonster {
 		if (damageType != DamageType.COMBAT)
 			return;
 
-		EntityPlayer player = Minecraft.getMinecraft(this).thePlayer;
 		setPos(player.x, player.y, player.z);
 		smoke();
 		world.playSoundAtEntity(player, "farlanders.fwoosh", 1.0f, 1.0f);
