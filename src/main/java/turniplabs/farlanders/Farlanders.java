@@ -23,7 +23,7 @@ public class Farlanders implements ModInitializer {
 
 		SoundHelper.addSound(MOD_ID, "whispers.wav");
 		SoundHelper.addSound(MOD_ID, "fwoosh.wav");
-		EntityHelper.createEntity(EntityFarlander.class, new RendererFarlander(new ModelFarlander(), 0.5f),200, "Farlander");
-		EntityHelper.createEntity(EntityEyes.class, new RendererEyes(new ModelEyes(), 0.7f), 201, "Eyes");
+		EntityHelper.createEntity(EntityFarlander.class, new RendererFarlander(new ModelFarlander(), 0.5f),70, "Farlander");
+		EntityHelper.createEntity(EntityEyes.class, new RendererEyes(new ModelEyes(), 0.7f), 71, "Eyes");
     }
 }
