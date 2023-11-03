@@ -21,6 +21,8 @@ public abstract class EntityPlayerMixin extends Entity {
 	private boolean toggledFullBright = false;
 	@Unique
 	private int durabilityTimer = 0;
+	@Unique
+	private Boolean gameSetFullbright = null;
 
 	@Shadow
 	public InventoryPlayer inventory = new InventoryPlayer((EntityPlayer)(Object)this);
@@ -36,41 +38,43 @@ public abstract class EntityPlayerMixin extends Entity {
 
 	@Inject(method = "onLivingUpdate", at = @At("TAIL"))
 	private void farlanders_nightVision(CallbackInfo ci) {
-		if (!world.isClientSide && hasNightVision()){
-			if (durabilityTimer > 100) {
-				durabilityTimer = 0;
-				inventory.damageArmor(1, 3);
+		if (!world.isClientSide){
+			durabilityTimer++;
+			if (hasNightVision()){
+				if (durabilityTimer > 100) {
+					durabilityTimer = 0;
+					inventory.damageArmor(1, 3);
+				}
 			}
 			return;
 		}
-		if (world.isClientSide){
-			Minecraft mc = Minecraft.getMinecraft(this);
-			boolean gameSetFullbright = mc.fullbright;
-			if (hasNightVision()){
-				if (!toggledFullBright && mc.fullbright)
-					gameSetFullbright = true;
+		Minecraft mc = Minecraft.getMinecraft(this);
+		if (gameSetFullbright == null){
+			gameSetFullbright = mc.fullbright;
+		}
+		if (hasNightVision()){
+			if (!toggledFullBright && mc.fullbright)
+				gameSetFullbright = true;
 
-				if (!toggledFullBright) {
-					if (!mc.fullbright) {
-						mc.fullbright = true;
-						mc.renderGlobal.loadRenderers();
-					}
-					toggledFullBright = true;
-				}
-
+			if (!toggledFullBright) {
 				if (!mc.fullbright) {
-					gameSetFullbright = !gameSetFullbright;
 					mc.fullbright = true;
 					mc.renderGlobal.loadRenderers();
 				}
-			} else {
-				if (toggledFullBright) {
-					mc.fullbright = gameSetFullbright;
-					toggledFullBright = false;
-					mc.renderGlobal.loadRenderers();
-				}
+				toggledFullBright = true;
 			}
 
+			if (!mc.fullbright) {
+				gameSetFullbright = !gameSetFullbright;
+				mc.fullbright = true;
+				mc.renderGlobal.loadRenderers();
+			}
+		} else {
+			if (toggledFullBright) {
+				mc.fullbright = gameSetFullbright;
+				toggledFullBright = false;
+				mc.renderGlobal.loadRenderers();
+			}
 		}
 	}
 }
