@@ -1,12 +1,12 @@
 package turniplabs.farlanders.entity;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntityMonster;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
+import turniplabs.farlanders.Farlanders;
 import turniplabs.farlanders.util.FarlanderUtils;
 
 public class EntityFarlander extends EntityMonster {
@@ -151,5 +151,12 @@ public class EntityFarlander extends EntityMonster {
 	@Override
 	protected Entity findPlayerToAttack() {
 		return angry ? player : null;
+	}
+
+	@Override
+	protected void dropFewItems() {
+		int dropRand = random.nextInt(2);
+
+		spawnAtLocation(Farlanders.itemLens.id, dropRand);
 	}
 }
