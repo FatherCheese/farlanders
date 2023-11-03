@@ -46,34 +46,35 @@ public abstract class EntityPlayerMixin extends Entity {
 					inventory.damageArmor(1, 3);
 				}
 			}
-			return;
 		}
 		Minecraft mc = Minecraft.getMinecraft(this);
-		if (gameSetFullbright == null){
-			gameSetFullbright = mc.fullbright;
-		}
-		if (hasNightVision()){
-			if (!toggledFullBright && mc.fullbright)
-				gameSetFullbright = true;
+		if (mc != null){
+			if (gameSetFullbright == null){
+				gameSetFullbright = mc.fullbright;
+			}
+			if (hasNightVision()){
+				if (!toggledFullBright && mc.fullbright)
+					gameSetFullbright = true;
 
-			if (!toggledFullBright) {
+				if (!toggledFullBright) {
+					if (!mc.fullbright) {
+						mc.fullbright = true;
+						mc.renderGlobal.loadRenderers();
+					}
+					toggledFullBright = true;
+				}
+
 				if (!mc.fullbright) {
+					gameSetFullbright = !gameSetFullbright;
 					mc.fullbright = true;
 					mc.renderGlobal.loadRenderers();
 				}
-				toggledFullBright = true;
-			}
-
-			if (!mc.fullbright) {
-				gameSetFullbright = !gameSetFullbright;
-				mc.fullbright = true;
-				mc.renderGlobal.loadRenderers();
-			}
-		} else {
-			if (toggledFullBright) {
-				mc.fullbright = gameSetFullbright;
-				toggledFullBright = false;
-				mc.renderGlobal.loadRenderers();
+			} else {
+				if (toggledFullBright) {
+					mc.fullbright = gameSetFullbright;
+					toggledFullBright = false;
+					mc.renderGlobal.loadRenderers();
+				}
 			}
 		}
 	}
