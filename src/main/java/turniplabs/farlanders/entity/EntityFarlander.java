@@ -85,12 +85,12 @@ public class EntityFarlander extends EntityMonster {
 		if (player != null && player.gamemode != Gamemode.creative) {
 			if (FarlanderUtils.isStaredAt(this, player)) {
 				angry = true;
-				yRot = player.yRot + 180;
-			}
-
-			if (!FarlanderUtils.isStaredAt(this, player) && angry) {
-				double diffX = player.x - x;
-				double diffZ = player.z - z;
+				faceEntity(player, 1.0f, 1.0f);
+			} else
+				if (!FarlanderUtils.isStaredAt(this, player) && angry) {
+				double diffX = player.x - this.x;
+				double diffY = player.y - this.y;
+				double diffZ = player.z - this.z;
 
 				++ticksNotLooking;
 
@@ -100,13 +100,13 @@ public class EntityFarlander extends EntityMonster {
 				}
 
 				if (teleportTime == 0) {
-					setPos(player.x - diffX * random.nextDouble(), player.y, player.z - diffZ * random.nextDouble());
+					setPos(player.x - diffX * random.nextDouble(), player.y - diffY, player.z - diffZ * random.nextDouble());
 					smoke();
 					world.playSoundAtEntity(player, "farlanders.fwoosh", 1.0f, 1.0f);
 					teleportTime = 80;
 				}
 
-				if (ticksNotLooking == 200) {
+				if (ticksNotLooking == 600) {
 					ticksNotLooking = 0;
 					angry = !angry;
 				}
@@ -124,7 +124,7 @@ public class EntityFarlander extends EntityMonster {
 		if (damageType != DamageType.COMBAT)
 			return;
 
-		setPos(player.x, player.y, player.z);
+		setPos(player.x + random.nextDouble(), player.y, player.z + random.nextDouble());
 		smoke();
 		world.playSoundAtEntity(player, "farlanders.fwoosh", 1.0f, 1.0f);
 	}
@@ -158,5 +158,9 @@ public class EntityFarlander extends EntityMonster {
 		int dropRand = random.nextInt(2);
 
 		spawnAtLocation(Farlanders.itemLens.id, dropRand);
+	}
+
+	@Override
+	protected void jump() {
 	}
 }

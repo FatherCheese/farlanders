@@ -1,7 +1,6 @@
 package turniplabs.farlanders;
 
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemArmor;
 import net.minecraft.core.item.material.ArmorMaterial;

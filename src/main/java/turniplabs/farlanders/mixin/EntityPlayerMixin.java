@@ -16,7 +16,6 @@ import turniplabs.farlanders.Farlanders;
 @Mixin(value = EntityPlayer.class, remap = false)
 public abstract class EntityPlayerMixin extends Entity {
 
-
 	@Unique
 	private boolean toggledFullBright = false;
 	@Unique
@@ -25,7 +24,7 @@ public abstract class EntityPlayerMixin extends Entity {
 	private Boolean gameSetFullbright = null;
 
 	@Shadow
-	public InventoryPlayer inventory = new InventoryPlayer((EntityPlayer)(Object)this);
+	public final InventoryPlayer inventory = new InventoryPlayer((EntityPlayer)(Object)this);
 
 	public EntityPlayerMixin(World world) {
 		super(world);

@@ -27,15 +27,15 @@ public class ModelEyes extends ModelBase {
 		leftArm = new Cube(0, 18);
 		rightArm = new Cube(0, 18);
 		cepha = new Cube(32, 5);
-		abdomen = new Cube(20, 12);
-		leftLeg1 = new Cube(28, 28);
-		leftLeg2 = new Cube(28, 28);
-		leftLeg3 = new Cube(28, 28);
-		leftLeg4 = new Cube(28, 28);
-		rightLeg1 = new Cube(28, 28);
-		rightLeg2 = new Cube(28, 28);
-		rightLeg3 = new Cube(28, 28);
-		rightLeg4 = new Cube(28, 28);
+		abdomen = new Cube(20, 0);
+		leftLeg1 = new Cube(28, 15);
+		leftLeg2 = new Cube(28, 15);
+		leftLeg3 = new Cube(28, 15);
+		leftLeg4 = new Cube(28, 15);
+		rightLeg1 = new Cube(28, 15);
+		rightLeg2 = new Cube(28, 15);
+		rightLeg3 = new Cube(28, 15);
+		rightLeg4 = new Cube(28, 15);
 
 		head.addBox(-4.0f, -26.0f, -7.0f, 8, 8, 8);
 		torso.addBox(-4.0f, -18.0f, -5.0f, 8, 12, 4);
@@ -82,6 +82,7 @@ public class ModelEyes extends ModelBase {
 
 	@Override
 	public void render(float limbSwing, float limbYaw, float ticksExisted, float headYaw, float headPitch, float scale) {
+
 		head.render(scale);
 		torso.render(scale);
 		leftArm.render(scale);
@@ -96,12 +97,5 @@ public class ModelEyes extends ModelBase {
 		rightLeg2.render(scale);
 		rightLeg3.render(scale);
 		rightLeg4.render(scale);
-	}
-
-	@Override
-	public void setRotationAngles(float limbSwing, float limbYaw, float ticksExisted, float headYaw, float headPitch, float scale) {
-		super.setRotationAngles(limbSwing, limbYaw, ticksExisted, headYaw, headPitch, scale);
-		head.rotateAngleX = headPitch / (float) (180.0 / Math.PI);
-		head.rotateAngleY = headYaw / (float) (180.0 / Math.PI);
 	}
 }

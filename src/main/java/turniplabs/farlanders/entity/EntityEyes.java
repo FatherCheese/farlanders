@@ -4,6 +4,8 @@ import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntityMonster;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.type.WorldType;
+import net.minecraft.core.world.type.WorldTypes;
 import turniplabs.farlanders.util.FarlanderUtils;
 
 public class EntityEyes extends EntityMonster {
@@ -19,6 +21,7 @@ public class EntityEyes extends EntityMonster {
 		setSize(1.4f, 1.4f);
 		health = 1000;
 		moveSpeed = 0;
+		attackStrength = 0;
 	}
 
 	@Override
@@ -28,7 +31,7 @@ public class EntityEyes extends EntityMonster {
 		EntityPlayer player = world.getClosestPlayerToEntity(this, 16.0);
 
 		if (player != null) {
-			this.yRot = player.yRot + 180;
+			faceEntity(player, 1.0f, 1.0f);
 
 			if (found)
 				++stareTimer;
@@ -37,7 +40,7 @@ public class EntityEyes extends EntityMonster {
 				found = true;
 
 				if (soundTimer == 0) {
-					world.playSoundAtEntity(player, "ambient.cave.cave", 1.0f, 1.0f);
+					world.playSoundAtEntity(this, "ambient.cave.cave", 1.0f, 1.0f);
 					soundTimer = 1;
 				}
 
@@ -47,6 +50,10 @@ public class EntityEyes extends EntityMonster {
 		}
 	}
 
+	private boolean validWorldType() {
+        return world.worldType != WorldTypes.FLAT || world.worldType != WorldTypes.EMPTY || world.worldType != WorldTypes.PARADISE_DEFAULT;
+    }
+
 	@Override
 	protected Entity findPlayerToAttack() {
 		return null;
@@ -54,7 +61,7 @@ public class EntityEyes extends EntityMonster {
 
 	@Override
 	public boolean getCanSpawnHere() {
-        return !(y > 48);
+		return super.getCanSpawnHere() && validWorldType() && !(y <= 48);
 	}
 
 	@Override

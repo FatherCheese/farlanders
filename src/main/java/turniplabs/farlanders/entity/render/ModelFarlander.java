@@ -2,8 +2,6 @@ package turniplabs.farlanders.entity.render;
 
 import net.minecraft.client.render.model.Cube;
 import net.minecraft.client.render.model.ModelBase;
-import net.minecraft.core.util.helper.MathHelper;
-import org.checkerframework.checker.units.qual.C;
 
 public class ModelFarlander extends ModelBase {
 	private final Cube head;
@@ -39,29 +37,11 @@ public class ModelFarlander extends ModelBase {
 	@Override
 	public void render(float limbSwing, float limbYaw, float ticksExisted, float headYaw, float headPitch, float scale) {
 		super.render(limbSwing, limbYaw, ticksExisted, headYaw, headPitch, scale);
-
 		head.render(scale);
 		body.render(scale);
 		armLeft.render(scale);
 		armRight.render(scale);
 		legLeft.render(scale);
 		legRight.render(scale);
-	}
-
-	@Override
-	public void setRotationAngles(float limbSwing, float limbYaw, float ticksExisted, float headYaw, float headPitch, float scale) {
-		super.setRotationAngles(limbSwing, limbYaw, ticksExisted, headYaw, headPitch, scale);
-
-		head.rotateAngleX = headPitch / (float) (180 / Math.PI);
-		head.rotateAngleY = headYaw / (float) (180 / Math.PI);
-		armLeft.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbYaw * 0.5F;
-		armRight.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + 3.141593F) * 2.0F * limbYaw * 0.5F;
-		legLeft.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + 3.141593F) * 1.4F * limbYaw;
-		legRight.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbYaw;
-
-		armRight.rotateAngleZ += MathHelper.cos(ticksExisted * 0.09F) * 0.05F + 0.05F;
-		armLeft.rotateAngleZ -= MathHelper.cos(ticksExisted * 0.09F) * 0.05F + 0.05F;
-		armRight.rotateAngleX += MathHelper.sin(ticksExisted * 0.067F) * 0.05F;
-		armLeft.rotateAngleX -= MathHelper.sin(ticksExisted * 0.067F) * 0.05F;
 	}
 }

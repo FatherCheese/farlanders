@@ -5,7 +5,6 @@ import net.minecraft.client.render.entity.LivingRenderer;
 import net.minecraft.client.render.model.ModelBase;
 import org.lwjgl.opengl.GL11;
 import turniplabs.farlanders.entity.EntityEyes;
-import turniplabs.farlanders.entity.EntityFarlander;
 
 public class RendererEyes extends LivingRenderer<EntityEyes> {
 
