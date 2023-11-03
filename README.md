@@ -15,4 +15,4 @@ An alternate timeline variant of the Enderman, to scare your socks off!
 
 3. Download this mod from the BTA modding site (https://bta-modding.nouma-vallee.fr/mods/) or from the releases tab.
 
-4. Plug the jar file intp you or your server's Mods folder, and have fun!
+4. Plug the jar file into the client or server's Mods folder or MultiMC/Prism Launcher tab. Have fun!
