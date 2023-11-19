@@ -20,7 +20,7 @@ public class BiomeMixin {
 
 	@Inject(method = "<init>", remap = false, at = @At("TAIL"))
 	private void farlanders_addMobs(CallbackInfo ci) {
-		spawnableMonsterList.add(new SpawnListEntry(EntityFarlander.class, 3));
+		spawnableMonsterList.add(new SpawnListEntry(EntityFarlander.class, 1));
 		spawnableMonsterList.add(new SpawnListEntry(EntityEyes.class, 1));
 	}
 }

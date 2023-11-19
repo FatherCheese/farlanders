@@ -21,7 +21,7 @@ public abstract class EntityPlayerMixin extends Entity {
 	@Unique
 	private int durabilityTimer = 0;
 	@Unique
-	private Boolean gameSetFullbright = null;
+	private Boolean gameFullBright = null;
 
 	@Shadow
 	public final InventoryPlayer inventory = new InventoryPlayer((EntityPlayer)(Object)this);
@@ -46,14 +46,15 @@ public abstract class EntityPlayerMixin extends Entity {
 				}
 			}
 		}
+
 		Minecraft mc = Minecraft.getMinecraft(this);
 		if (mc != null){
-			if (gameSetFullbright == null){
-				gameSetFullbright = mc.fullbright;
+			if (gameFullBright == null){
+				gameFullBright = mc.fullbright;
 			}
 			if (hasNightVision()){
 				if (!toggledFullBright && mc.fullbright)
-					gameSetFullbright = true;
+					gameFullBright = true;
 
 				if (!toggledFullBright) {
 					if (!mc.fullbright) {
@@ -64,13 +65,13 @@ public abstract class EntityPlayerMixin extends Entity {
 				}
 
 				if (!mc.fullbright) {
-					gameSetFullbright = !gameSetFullbright;
+					gameFullBright = !gameFullBright;
 					mc.fullbright = true;
 					mc.renderGlobal.loadRenderers();
 				}
 			} else {
 				if (toggledFullBright) {
-					mc.fullbright = gameSetFullbright;
+					mc.fullbright = gameFullBright;
 					toggledFullBright = false;
 					mc.renderGlobal.loadRenderers();
 				}

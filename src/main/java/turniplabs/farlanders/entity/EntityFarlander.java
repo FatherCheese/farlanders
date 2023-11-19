@@ -6,6 +6,7 @@ import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
+import org.lwjgl.Sys;
 import turniplabs.farlanders.Farlanders;
 import turniplabs.farlanders.util.FarlanderUtils;
 
@@ -15,6 +16,7 @@ public class EntityFarlander extends EntityMonster {
 	private int soundTicks = 0;
 	private int ticksNotLooking = 0;
 	private int teleportTime = 0;
+	private int randomTeleportTime;
 
 	public EntityFarlander(World world) {
 		super(world);
@@ -43,33 +45,35 @@ public class EntityFarlander extends EntityMonster {
 		}
 	}
 
-	public void randomTP(int x, int y, int z) {
+	public void randomTP(int randPosX, int randPosY, int randPosZ) {
 		int randX = 0;
 		int randY = 0;
 		int randZ = 0;
 
 		// Check 5 times for a valid position
 		for (int i = 0; i < 5; i++) {
-			randX = (int) (random.nextInt(x + x) - x + this.x);
-			randY = (int) (random.nextInt(y + y) - y + this.y);
-			randZ = (int) (random.nextInt(z + z) - z + this.z);
+			randX = (int) (random.nextInt(randPosX) + this.x);
+			randY = (int) (random.nextInt(randPosY) + this.y);
+			randZ = (int) (random.nextInt(randPosZ) + this.z);
 
-			if (FarlanderUtils.isValidTPPos(world, randX, randY, randZ))
-				break;
+			if (randY < 80 && world.isAirBlock(randX, (int) (randY + bb.minY), randZ)) {
+				setPos(randX, randY, randZ);
+				smoke();
+				world.playSoundAtEntity(this, "farlanders.fwoosh", 1.0f, 1.0f);
+			}
 		}
-		if (!FarlanderUtils.isValidTPPos(world, randX, randY, randZ))
-			return;
-
-		setPos(randX, randY, randZ);
-		smoke();
-		world.playSoundAtEntity(this, "farlanders.fwoosh", 1.0f, 1.0f);
 	}
 
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-
 		player = world.getClosestPlayerToEntity(this, 32.0);
+
+		++randomTeleportTime;
+		if (!angry && randomTeleportTime >= 600) {
+			randomTP(16, 16, 16);
+			randomTeleportTime = 0;
+		}
 
 		if (soundTicks > 0 && soundTicks <= 540)
             --soundTicks;
@@ -78,14 +82,14 @@ public class EntityFarlander extends EntityMonster {
             --teleportTime;
 
 		if (isInWater()) {
-			damageEntity(1, DamageType.GENERIC);
-			randomTP(32, 16, 32);
+			this.hurt(null, 10, DamageType.GENERIC);
+			randomTP(16, 16, 16);
 		}
 
 		if (player != null && player.gamemode != Gamemode.creative) {
 			if (FarlanderUtils.isStaredAt(this, player)) {
 				angry = true;
-				faceEntity(player, 1.0f, 1.0f);
+				faceEntity(player, 1.0F, 1.0F);
 			} else
 				if (!FarlanderUtils.isStaredAt(this, player) && angry) {
 				double diffX = player.x - this.x;
@@ -162,5 +166,10 @@ public class EntityFarlander extends EntityMonster {
 
 	@Override
 	protected void jump() {
+	}
+
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 2;
 	}
 }

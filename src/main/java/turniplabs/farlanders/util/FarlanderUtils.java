@@ -12,7 +12,7 @@ public class FarlanderUtils {
 	}
 
 	public static boolean isValidTPPos(World world, int x, int y, int z) {
-		return world.isAirBlock(x, y, z) && world.isBlockOpaqueCube(z, y - 1, z);
+		return !world.isAirBlock(x, y - 1, z);
 	}
 
 	public static boolean isStaredAt(EntityLiving entity, EntityPlayer player) {

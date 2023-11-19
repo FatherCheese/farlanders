@@ -4,13 +4,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.entity.LivingRenderer;
 import net.minecraft.client.render.model.ModelBase;
 import org.lwjgl.opengl.GL11;
+import turniplabs.farlanders.Farlanders;
 import turniplabs.farlanders.entity.EntityEyes;
+import useless.dragonfly.helper.ModelHelper;
 
 public class RendererEyes extends LivingRenderer<EntityEyes> {
 
-	public RendererEyes(ModelBase modelbase, float shadowSize) {
-		super(modelbase, shadowSize);
-		setRenderPassModel(new ModelEyes());
+	public RendererEyes(ModelBase modelbase) {
+		super(modelbase, 0.7F);
+		setRenderPassModel(ModelHelper.getOrCreateEntityModel(Farlanders.MOD_ID, "entity/eyes.json", ModelEyes.class));
 	}
 
 	private boolean setEyeBrightness(EntityEyes eyes, int i, float f) {

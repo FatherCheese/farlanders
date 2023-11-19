@@ -31,7 +31,7 @@ public class EntityEyes extends EntityMonster {
 		EntityPlayer player = world.getClosestPlayerToEntity(this, 16.0);
 
 		if (player != null) {
-			faceEntity(player, 1.0f, 1.0f);
+			faceEntity(player, 1.0F, 1.0F);
 
 			if (found)
 				++stareTimer;
@@ -51,7 +51,9 @@ public class EntityEyes extends EntityMonster {
 	}
 
 	private boolean validWorldType() {
-        return world.worldType != WorldTypes.FLAT || world.worldType != WorldTypes.EMPTY || world.worldType != WorldTypes.PARADISE_DEFAULT;
+        return world.worldType != WorldTypes.FLAT ||
+			world.worldType != WorldTypes.EMPTY ||
+			world.worldType != WorldTypes.PARADISE_DEFAULT;
     }
 
 	@Override
@@ -61,7 +63,7 @@ public class EntityEyes extends EntityMonster {
 
 	@Override
 	public boolean getCanSpawnHere() {
-		return super.getCanSpawnHere() && validWorldType() && !(y <= 48);
+		return super.getCanSpawnHere() && validWorldType() && !(y <= (double) world.getHeightBlocks() / 3);
 	}
 
 	@Override
@@ -81,5 +83,10 @@ public class EntityEyes extends EntityMonster {
 
 	@Override
 	protected void jump() {
+	}
+
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 1;
 	}
 }

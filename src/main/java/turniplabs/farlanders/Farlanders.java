@@ -13,6 +13,7 @@ import turniplabs.farlanders.entity.render.ModelFarlander;
 import turniplabs.farlanders.entity.render.RendererEyes;
 import turniplabs.farlanders.entity.render.RendererFarlander;
 import turniplabs.halplibe.helper.*;
+import useless.dragonfly.helper.ModelHelper;
 
 
 public class Farlanders implements ModInitializer {
@@ -40,7 +41,9 @@ public class Farlanders implements ModInitializer {
 
 		SoundHelper.addSound(MOD_ID, "whispers.wav");
 		SoundHelper.addSound(MOD_ID, "fwoosh.wav");
-		EntityHelper.createEntity(EntityFarlander.class, new RendererFarlander(new ModelFarlander(), 0.5f),70, "Farlander");
-		EntityHelper.createEntity(EntityEyes.class, new RendererEyes(new ModelEyes(), 0.7f), 71, "Eyes");
+		EntityHelper.createEntity(EntityFarlander.class, new RendererFarlander(ModelHelper.getOrCreateEntityModel(MOD_ID, "entity/farlander.json", ModelFarlander.class)), 70, "Farlander");
+		EntityHelper.createEntity(EntityEyes.class, new RendererEyes(ModelHelper.getOrCreateEntityModel(MOD_ID, "entity/eyes.json", ModelEyes.class)), 71, "Eyes");
+		//		EntityHelper.createEntity(EntityFarlander.class, new RendererFarlander(new ModelFarlander(), 0.5f),70, "Farlander");
+//		EntityHelper.createEntity(EntityEyes.class, new RendererEyes(new ModelEyes(), 0.7f), 71, "Eyes");
     }
 }
