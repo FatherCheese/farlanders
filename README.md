@@ -5,6 +5,7 @@ An alternate timeline variant of the Enderman, to scare your socks off!
 ## Prerequisites
 - Java 17 ([Eclipse Temurin](https://adoptium.net/temurin/releases/) recommended)
 - HalpLibe 2.5.0 or above (https://github.com/Turnip-Labs/bta-halplibe)
+- Dragonfly 0.1.1 (https://github.com/UselessBullets/DragonFly)
 
 ## Setup instructions
    
