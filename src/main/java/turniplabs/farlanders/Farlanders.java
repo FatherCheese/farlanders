@@ -26,12 +26,12 @@ public class Farlanders implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("Farlanders initialized. Stay safe...");
+		new FarlandersConfig();
 
 		materialGoggles  = ArmorHelper.createArmorMaterial("goggles", 120, 70.0f, 70.0f, 70.0f, 70.0f);
 
-		itemLens = ItemHelper.createItem(MOD_ID, new Item(16600), "lens", "lens.png");
-		itemArmorGoggles = ItemHelper.createItem(MOD_ID, new ItemArmor("tools.goggles", 16601, materialGoggles, 0), "armor.helmet.goggles", "armor_goggles.png");
+		itemLens = ItemHelper.createItem(MOD_ID, new Item(FarlandersConfig.cfg.getInt("Item IDs.farlanderLens")), "lens", "lens.png");
+		itemArmorGoggles = ItemHelper.createItem(MOD_ID, new ItemArmor("tools.goggles", FarlandersConfig.cfg.getInt("Item IDs.farlanderGoggles"), materialGoggles, 0), "armor.helmet.goggles", "armor_goggles.png");
 
 		RecipeHelper.Crafting.createRecipe(itemArmorGoggles, 1, new Object[]{
 			"111", "1#1", "2#2",
@@ -41,9 +41,16 @@ public class Farlanders implements ModInitializer {
 
 		SoundHelper.addSound(MOD_ID, "whispers.wav");
 		SoundHelper.addSound(MOD_ID, "fwoosh.wav");
-		EntityHelper.createEntity(EntityFarlander.class, new RendererFarlander(ModelHelper.getOrCreateEntityModel(MOD_ID, "entity/farlander.json", ModelFarlander.class)), 70, "Farlander");
-		EntityHelper.createEntity(EntityEyes.class, new RendererEyes(ModelHelper.getOrCreateEntityModel(MOD_ID, "entity/eyes.json", ModelEyes.class)), 71, "Eyes");
-		//		EntityHelper.createEntity(EntityFarlander.class, new RendererFarlander(new ModelFarlander(), 0.5f),70, "Farlander");
-//		EntityHelper.createEntity(EntityEyes.class, new RendererEyes(new ModelEyes(), 0.7f), 71, "Eyes");
+		EntityHelper.createEntity(EntityFarlander.class,
+			new RendererFarlander(ModelHelper.getOrCreateEntityModel(MOD_ID, "entity/farlander.json", ModelFarlander.class)),
+			FarlandersConfig.cfg.getInt("Farlanders.farlanderID"),
+			"Farlander");
+
+		EntityHelper.createEntity(EntityEyes.class,
+			new RendererEyes(ModelHelper.getOrCreateEntityModel(MOD_ID, "entity/eyes.json", ModelEyes.class)),
+			FarlandersConfig.cfg.getInt("Farlanders.eyesID"),
+			"Eyes");
+
+		LOGGER.info("Farlanders initialized. Stay safe...");
     }
 }
