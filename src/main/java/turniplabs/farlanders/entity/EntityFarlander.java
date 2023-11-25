@@ -8,6 +8,7 @@ import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
 import org.lwjgl.Sys;
 import turniplabs.farlanders.Farlanders;
+import turniplabs.farlanders.FarlandersConfig;
 import turniplabs.farlanders.util.FarlanderUtils;
 
 public class EntityFarlander extends EntityMonster {
@@ -24,7 +25,7 @@ public class EntityFarlander extends EntityMonster {
 		highestSkinVariant = 0;
 		scoreValue = 1000;
 		setSize(0.6f, 2.5f);
-		health = 120;
+		health = FarlandersConfig.cfg.getInt("Farlanders.farlanderHealth");
 		moveSpeed = 0;
 	}
 
@@ -123,7 +124,7 @@ public class EntityFarlander extends EntityMonster {
 		super.damageEntity(i, damageType);
 
 		health -= i;
-		attackStrength += 3;
+		attackStrength += FarlandersConfig.cfg.getInt("Farlanders.farlanderDamage");
 		attackTime += 1;
 		if (damageType != DamageType.COMBAT)
 			return;

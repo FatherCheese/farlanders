@@ -12,7 +12,9 @@ public class FarlandersConfig {
 	public FarlandersConfig() {
 		properties.addCategory("Farlanders")
 			.addEntry("farlanderID", 70)
-			.addEntry("eyesID", 71);
+			.addEntry("eyesID", 71)
+			.addEntry("farlanderHealth", "Default is 120", 120)
+			.addEntry("farlanderDamage", "This is plus the number based on their health. Default is 3.", 3);
 
 		properties.addCategory("Item IDs")
 			.addEntry("farlanderLens", 16600)
