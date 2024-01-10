@@ -34,7 +34,7 @@
   "depends": {
     "fabricloader": ">=0.13.3",
 		"halplibe": ">=2.7.0",
-		"dragonfly": "0.4.1"
+		"dragonfly": "0.4.x"
   },
   "suggests": {
   }
