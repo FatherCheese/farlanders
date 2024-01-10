@@ -22,8 +22,4 @@ public class FarlandersConfig {
 
 		cfg = new TomlConfigHandler(updater, Farlanders.MOD_ID, properties);
 	}
-
-	public FarlandersConfig() {
-
-	}
 }

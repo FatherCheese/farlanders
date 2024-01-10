@@ -1,0 +1,35 @@
+[
+  {
+    "name": "farlanders:workbench/goggles",
+    "type": "minecraft:crafting/shaped",
+    "pattern": [
+      "111",
+      "1 1",
+      "2 2"
+    ],
+    "symbols": [
+      {
+        "symbol": "1",
+        "stack": {
+          "key": "item.ingot.gold",
+          "amount": 1,
+          "meta": 0
+        }
+      },
+      {
+        "symbol": "2",
+        "stack": {
+          "key": "item.farlanders.lens",
+          "amount": 1,
+          "meta": 0
+        }
+      }
+    ],
+    "result": {
+      "key": "item.farlanders.armor.helmet.goggles",
+      "amount": 1,
+      "meta": 0
+    },
+    "consumeContainers": true
+  }
+]
