@@ -51,6 +51,7 @@ public class Farlanders implements ModInitializer {
 			FarlandersConfig.cfg.getInt("Farlanders.eyesID"),
 			"Eyes");
 
+
 		LOGGER.info("Farlanders initialized. Stay safe...");
     }
 }

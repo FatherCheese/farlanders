@@ -8,9 +8,9 @@ public class FarlandersConfig {
 	public static ConfigUpdater updater = ConfigUpdater.fromProperties();
 	private static final Toml properties = new Toml("Farlander's TOML Config");
 	public static TomlConfigHandler cfg;
-
-	public FarlandersConfig() {
+	static {
 		properties.addCategory("Farlanders")
+			.addEntry("enableEntities", true)
 			.addEntry("farlanderID", 70)
 			.addEntry("eyesID", 71)
 			.addEntry("farlanderHealth", "Default is 120", 120)
@@ -21,5 +21,9 @@ public class FarlandersConfig {
 			.addEntry("farlanderGoggles", 16601);
 
 		cfg = new TomlConfigHandler(updater, Farlanders.MOD_ID, properties);
+	}
+
+	public FarlandersConfig() {
+
 	}
 }
