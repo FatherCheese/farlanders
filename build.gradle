@@ -80,6 +80,14 @@ repositories {
 		}
 		metadataSources { artifact() }
 	}
+	ivy {
+		url = "https://github.com/UselessBullets"
+		patternLayout {
+			artifact "[organisation]/releases/download/[revision]/[module]-[revision].jar"
+			m2compatible = true
+		}
+		metadataSources { artifact() }
+	}
 }
 
 dependencies {
@@ -95,9 +103,12 @@ dependencies {
 	// Dragonfly API
 	modImplementation "DragonFly:dragonfly:${project.dragonfly_version}"
 
+	modImplementation "BTA_Babric_PrismaticLibe:prismaticlibe:3.0.1-7.1"
+	modImplementation "BTA_Babric_SpawnEggs:spawneggs:2.0.1-7.1"
+
 	modImplementation "ModMenu:ModMenu:2.0.0"
 
-	modImplementation "NoCrashes:NoCrashes:1.0.4"
+	//modImplementation "NoCrashes:NoCrashes:1.0.4"
 
 	implementation "org.slf4j:slf4j-api:1.8.0-beta4"
 	implementation "org.apache.logging.log4j:log4j-slf4j18-impl:2.16.0"

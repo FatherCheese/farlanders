@@ -16,7 +16,6 @@ public class EntityEyes extends EntityMonster {
 	public EntityEyes(World world) {
 		super(world);
 		skinName = "eyes";
-		highestSkinVariant = 0;
 		scoreValue = 0;
 		setSize(1.4f, 1.4f);
 		health = 1000;
@@ -36,7 +35,7 @@ public class EntityEyes extends EntityMonster {
 			if (found)
 				++stareTimer;
 
-			if (FarlanderUtils.isStaredAt(this, player) && player.getGamemode().areMobsHostile) {
+			if (FarlanderUtils.isStaredAt(this, player) && player.getGamemode().areMobsHostile()) {
 				found = true;
 
 				if (soundTimer == 0) {
@@ -65,13 +64,7 @@ public class EntityEyes extends EntityMonster {
 	public boolean getCanSpawnHere() {
 		return super.getCanSpawnHere() && validWorldType() && !(y <= (double) world.getHeightBlocks() / 3);
 	}
-
-	@Override
-	protected String getLivingSound() {
-		return null;
-	}
-
-	@Override
+    @Override
 	protected String getHurtSound() {
 		return null;
 	}

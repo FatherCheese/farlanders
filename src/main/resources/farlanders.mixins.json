@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BiomeMixin",
-    "EntityPlayerMixin",
-    "MinecraftMixin"
+    "EntityPlayerMixin"
   ],
   "client": [
   ],

@@ -22,7 +22,6 @@ public class EntityFarlander extends EntityMonster {
 	public EntityFarlander(World world) {
 		super(world);
 		skinName = "farlander";
-		highestSkinVariant = 0;
 		scoreValue = 1000;
 		setSize(0.6f, 2.5f);
 		health = FarlandersConfig.cfg.getInt("Farlanders.farlanderHealth");
@@ -137,13 +136,7 @@ public class EntityFarlander extends EntityMonster {
 	@Override
 	public void knockBack(Entity entity, int i, double d, double d1) {
 	}
-
-	@Override
-	protected String getLivingSound() {
-		return null;
-	}
-
-	@Override
+    @Override
 	protected String getHurtSound() {
 		return null;
 	}
