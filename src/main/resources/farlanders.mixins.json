@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "turniplabs.farlanders.mixin",
+  "package": "cookie.farlanders.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BiomeMixin",

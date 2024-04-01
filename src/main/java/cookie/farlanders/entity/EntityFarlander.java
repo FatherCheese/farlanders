@@ -1,4 +1,4 @@
-package turniplabs.farlanders.entity;
+package cookie.farlanders.entity;
 
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntityMonster;
@@ -6,10 +6,9 @@ import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
-import org.lwjgl.Sys;
-import turniplabs.farlanders.Farlanders;
-import turniplabs.farlanders.FarlandersConfig;
-import turniplabs.farlanders.util.FarlanderUtils;
+import cookie.farlanders.Farlanders;
+import cookie.farlanders.FarlandersConfig;
+import cookie.farlanders.util.FarlanderUtils;
 
 public class EntityFarlander extends EntityMonster {
 	private EntityPlayer player;
@@ -24,7 +23,7 @@ public class EntityFarlander extends EntityMonster {
 		skinName = "farlander";
 		scoreValue = 1000;
 		setSize(0.6f, 2.5f);
-		health = FarlandersConfig.cfg.getInt("Farlanders.farlanderHealth");
+		heartsHalvesLife = FarlandersConfig.cfg.getInt("Farlanders.farlanderHealth");
 		moveSpeed = 0;
 	}
 
@@ -46,9 +45,9 @@ public class EntityFarlander extends EntityMonster {
 	}
 
 	public void randomTP(int randPosX, int randPosY, int randPosZ) {
-		int randX = 0;
-		int randY = 0;
-		int randZ = 0;
+		int randX;
+		int randY;
+		int randZ;
 
 		// Check 5 times for a valid position
 		for (int i = 0; i < 5; i++) {
@@ -59,7 +58,7 @@ public class EntityFarlander extends EntityMonster {
 			if (randY < 80 && world.isAirBlock(randX, (int) (randY + bb.minY), randZ)) {
 				setPos(randX, randY, randZ);
 				smoke();
-				world.playSoundAtEntity(this, "farlanders.fwoosh", 1.0f, 1.0f);
+				world.playSoundAtEntity(null, this, "farlanders.fwoosh", 1.0f, 1.0f);
 			}
 		}
 	}
@@ -69,8 +68,8 @@ public class EntityFarlander extends EntityMonster {
 		super.onLivingUpdate();
 		player = world.getClosestPlayerToEntity(this, 32.0);
 
-		++randomTeleportTime;
-		if (!angry && randomTeleportTime >= 600) {
+		// If it isn't angry and the random teleport timer surpasses 600, reset timer and TP.
+		if (!angry && randomTeleportTime++ >= 600) {
 			randomTP(16, 16, 16);
 			randomTeleportTime = 0;
 		}
@@ -99,14 +98,14 @@ public class EntityFarlander extends EntityMonster {
 				++ticksNotLooking;
 
 				if (soundTicks == 0) {
-					world.playSoundAtEntity(player, "farlanders.whispers", 1.0f, 1.0f);
+					world.playSoundAtEntity(null, player, "farlanders.whispers", 1.0f, 1.0f);
 					soundTicks = 540;
 				}
 
 				if (teleportTime == 0) {
 					setPos(player.x - diffX * random.nextDouble(), player.y - diffY, player.z - diffZ * random.nextDouble());
 					smoke();
-					world.playSoundAtEntity(player, "farlanders.fwoosh", 1.0f, 1.0f);
+					world.playSoundAtEntity(null, player, "farlanders.fwoosh", 1.0f, 1.0f);
 					teleportTime = 80;
 				}
 
@@ -122,7 +121,7 @@ public class EntityFarlander extends EntityMonster {
 	protected void damageEntity(int i, DamageType damageType) {
 		super.damageEntity(i, damageType);
 
-		health -= i;
+		heartsHalvesLife -= i;
 		attackStrength += FarlandersConfig.cfg.getInt("Farlanders.farlanderDamage");
 		attackTime += 1;
 		if (damageType != DamageType.COMBAT)
@@ -130,7 +129,7 @@ public class EntityFarlander extends EntityMonster {
 
 		setPos(player.x + random.nextDouble(), player.y, player.z + random.nextDouble());
 		smoke();
-		world.playSoundAtEntity(player, "farlanders.fwoosh", 1.0f, 1.0f);
+		world.playSoundAtEntity(null, player, "farlanders.fwoosh", 1.0f, 1.0f);
 	}
 
 	@Override

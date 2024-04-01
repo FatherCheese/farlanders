@@ -1,4 +1,4 @@
-package turniplabs.farlanders.mixin;
+package cookie.farlanders.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.entity.Entity;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import turniplabs.farlanders.Farlanders;
+import cookie.farlanders.Farlanders;
 
 @Mixin(value = EntityPlayer.class, remap = false)
 public abstract class EntityPlayerMixin extends Entity {

@@ -1,5 +1,8 @@
-package turniplabs.farlanders.mixin;
+package cookie.farlanders.mixin;
 
+import cookie.farlanders.FarlandersConfig;
+import cookie.farlanders.entity.EntityEyes;
+import cookie.farlanders.entity.EntityFarlander;
 import net.minecraft.core.entity.SpawnListEntry;
 import net.minecraft.core.world.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;
@@ -7,9 +10,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import turniplabs.farlanders.FarlandersConfig;
-import turniplabs.farlanders.entity.EntityEyes;
-import turniplabs.farlanders.entity.EntityFarlander;
 
 import java.util.List;
 

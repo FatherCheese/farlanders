@@ -1,7 +1,7 @@
-package turniplabs.farlanders;
+package cookie.farlanders;
 
-import turniplabs.farlanders.entity.EntityEyes;
-import turniplabs.farlanders.entity.EntityFarlander;
+import cookie.farlanders.entity.EntityEyes;
+import cookie.farlanders.entity.EntityFarlander;
 import useless.spawneggs.SpawnEggsEntrypoint;
 import useless.spawneggs.SpawnEggsMod;
 

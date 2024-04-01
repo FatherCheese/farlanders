@@ -1,11 +1,11 @@
-package turniplabs.farlanders.entity.render;
+package cookie.farlanders.entity.render;
 
+import cookie.farlanders.entity.EntityEyes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.entity.LivingRenderer;
 import net.minecraft.client.render.model.ModelBase;
 import org.lwjgl.opengl.GL11;
-import turniplabs.farlanders.Farlanders;
-import turniplabs.farlanders.entity.EntityEyes;
+import cookie.farlanders.Farlanders;
 import useless.dragonfly.helper.ModelHelper;
 
 public class RendererEyes extends LivingRenderer<EntityEyes> {

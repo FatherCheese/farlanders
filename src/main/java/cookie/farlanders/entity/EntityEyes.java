@@ -1,12 +1,12 @@
-package turniplabs.farlanders.entity;
+package cookie.farlanders.entity;
 
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntityMonster;
 import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
-import net.minecraft.core.world.type.WorldType;
 import net.minecraft.core.world.type.WorldTypes;
-import turniplabs.farlanders.util.FarlanderUtils;
+import cookie.farlanders.util.FarlanderUtils;
 
 public class EntityEyes extends EntityMonster {
 	private int stareTimer = 0;
@@ -18,7 +18,7 @@ public class EntityEyes extends EntityMonster {
 		skinName = "eyes";
 		scoreValue = 0;
 		setSize(1.4f, 1.4f);
-		health = 1000;
+		heartsHalvesLife = 1;
 		moveSpeed = 0;
 		attackStrength = 0;
 	}
@@ -32,14 +32,12 @@ public class EntityEyes extends EntityMonster {
 		if (player != null) {
 			faceEntity(player, 1.0F, 1.0F);
 
-			if (found)
-				++stareTimer;
+			if (found) ++stareTimer;
 
-			if (FarlanderUtils.isStaredAt(this, player) && player.getGamemode().areMobsHostile()) {
-				found = true;
+			if (FarlanderUtils.isStaredAt(this, player) && player.getGamemode().areMobsHostile()) {found = true;
 
 				if (soundTimer == 0) {
-					world.playSoundAtEntity(this, "ambient.cave.cave", 1.0f, 1.0f);
+					world.playSoundAtEntity(null, this, "ambient.cave.cave", 1.0f, 1.0f);
 					soundTimer = 1;
 				}
 
@@ -81,5 +79,10 @@ public class EntityEyes extends EntityMonster {
 	@Override
 	public int getMaxSpawnedInChunk() {
 		return 1;
+	}
+
+	@Override
+	public boolean hurt(Entity attacker, int i, DamageType type) {
+		return false;
 	}
 }

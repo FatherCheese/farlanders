@@ -1,4 +1,4 @@
-package turniplabs.farlanders.util;
+package cookie.farlanders.util;
 
 import net.minecraft.core.entity.EntityLiving;
 import net.minecraft.core.entity.player.EntityPlayer;

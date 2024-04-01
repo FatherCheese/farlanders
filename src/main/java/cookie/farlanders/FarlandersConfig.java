@@ -1,4 +1,4 @@
-package turniplabs.farlanders;
+package cookie.farlanders;
 
 import turniplabs.halplibe.util.ConfigUpdater;
 import turniplabs.halplibe.util.TomlConfigHandler;
@@ -8,6 +8,7 @@ public class FarlandersConfig {
 	public static ConfigUpdater updater = ConfigUpdater.fromProperties();
 	private static final Toml properties = new Toml("Farlander's TOML Config");
 	public static TomlConfigHandler cfg;
+
 	static {
 		properties.addCategory("Farlanders")
 			.addEntry("enableEntities", true)

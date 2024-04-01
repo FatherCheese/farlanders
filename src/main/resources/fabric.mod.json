@@ -24,17 +24,20 @@
 
   "environment": "*",
   "entrypoints": {
+		"main": [
+			"cookie.farlanders.Farlanders"
+		],
     "beforeGameStart": [
-			"turniplabs.farlanders.Farlanders"
+			"cookie.farlanders.Farlanders"
     ],
 		"beforeClientStart": [
-			"turniplabs.farlanders.Farlanders"
+			"cookie.farlanders.Farlanders"
 		],
 		"recipesReady": [
-			"turniplabs.farlanders.entity.crafting.FarlandersRecipes"
+			"cookie.farlanders.entity.crafting.FarlandersRecipes"
 		],
 		"spawneggs": [
-			"turniplabs.farlanders.SpawnEggsPlugin"
+			"cookie.farlanders.SpawnEggsPlugin"
 		]
   },
   "mixins": [

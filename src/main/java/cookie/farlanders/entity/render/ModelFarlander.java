@@ -1,4 +1,4 @@
-package turniplabs.farlanders.entity.render;
+package cookie.farlanders.entity.render;
 
 import net.minecraft.core.util.helper.MathHelper;
 import useless.dragonfly.model.entity.BenchEntityModel;
