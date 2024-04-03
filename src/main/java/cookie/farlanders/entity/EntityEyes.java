@@ -34,7 +34,8 @@ public class EntityEyes extends EntityMonster {
 
 			if (found) ++stareTimer;
 
-			if (FarlanderUtils.isStaredAt(this, player) && player.getGamemode().areMobsHostile()) {found = true;
+			if (FarlanderUtils.isStaredAt(this, player) && player.getGamemode().areMobsHostile()) {
+				found = true;
 
 				if (soundTimer == 0) {
 					world.playSoundAtEntity(null, this, "ambient.cave.cave", 1.0f, 1.0f);

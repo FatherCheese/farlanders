@@ -1,22 +1,23 @@
 package cookie.farlanders.entity;
 
+import com.mojang.nbt.CompoundTag;
+import cookie.farlanders.FarlandersConfig;
+import cookie.farlanders.item.FarlandersItems;
+import cookie.farlanders.util.FarlanderUtils;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntityMonster;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
-import cookie.farlanders.Farlanders;
-import cookie.farlanders.FarlandersConfig;
-import cookie.farlanders.util.FarlanderUtils;
 
 public class EntityFarlander extends EntityMonster {
 	private EntityPlayer player;
-	private boolean angry = false;
-	private int soundTicks = 0;
-	private int ticksNotLooking = 0;
-	private int teleportTime = 0;
-	private int randomTeleportTime;
+	private boolean isAngry = false;
+	private int soundTicks;
+	private int ticksNotLooking;
+	private int slipTimer;
+	private int randomSlipTimer;
 
 	public EntityFarlander(World world) {
 		super(world);
@@ -28,10 +29,11 @@ public class EntityFarlander extends EntityMonster {
 	}
 
 	private void smoke() {
-		for(int j = 0; j < 20; ++j) {
+		for(int i = 0; i < 20; ++i) {
 			double motX = random.nextGaussian() * 0.02;
 			double motY = random.nextGaussian() * 0.02;
 			double motZ = random.nextGaussian() * 0.02;
+
 			world.spawnParticle(
 				"smoke",
 				x + (double)(random.nextFloat() * bbWidth * 2.0F) - (double)bbWidth,
@@ -44,21 +46,25 @@ public class EntityFarlander extends EntityMonster {
 		}
 	}
 
-	public void randomTP(int randPosX, int randPosY, int randPosZ) {
+	public void randomlySlip(int randPosX, int randPosY, int randPosZ) {
+
 		int randX;
 		int randY;
 		int randZ;
 
 		// Check 5 times for a valid position
-		for (int i = 0; i < 5; i++) {
-			randX = (int) (random.nextInt(randPosX) + this.x);
-			randY = (int) (random.nextInt(randPosY) + this.y);
-			randZ = (int) (random.nextInt(randPosZ) + this.z);
+		if (!dead) {
+			for (int i = 0; i < 5; i++) {
+				randX = (int) (random.nextInt(randPosX) + this.x);
+				randY = (int) (random.nextInt(randPosY) + this.y);
+				randZ = (int) (random.nextInt(randPosZ) + this.z);
 
-			if (randY < 80 && world.isAirBlock(randX, (int) (randY + bb.minY), randZ)) {
-				setPos(randX, randY, randZ);
-				smoke();
-				world.playSoundAtEntity(null, this, "farlanders.fwoosh", 1.0f, 1.0f);
+				if (randY < 80 && world.isAirBlock(randX, (int) (randY + bb.minY), randZ) && !(world.getBlockLightValue(randX, randY, randZ) > 7)) {
+					world.playSoundAtEntity(null, this, "farlanders.slip", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
+					smoke();
+					setPos(randX, randY, randZ);
+					smoke();
+				}
 			}
 		}
 	}
@@ -69,72 +75,109 @@ public class EntityFarlander extends EntityMonster {
 		player = world.getClosestPlayerToEntity(this, 32.0);
 
 		// If it isn't angry and the random teleport timer surpasses 600, reset timer and TP.
-		if (!angry && randomTeleportTime++ >= 600) {
-			randomTP(16, 16, 16);
-			randomTeleportTime = 0;
+		if (!isAngry && randomSlipTimer++ >= 600) {
+			randomlySlip(16, 16, 16);
+			randomSlipTimer = 0;
 		}
 
-		if (soundTicks > 0 && soundTicks <= 540)
-            --soundTicks;
-
-		if (teleportTime > 0 && teleportTime <= 200)
-            --teleportTime;
-
-		if (isInWater()) {
-			this.hurt(null, 10, DamageType.GENERIC);
-			randomTP(16, 16, 16);
+		// Checks the light level in a 3x3 area around the Farlander.
+		// If it's above light level 7 then do damage and randomly teleport.
+		for (double _x = x - 1; _x <= x + 1; _x++) {
+			for (double _z = z - 1; _z <= z + 1; _z++) {
+				if (world.getBlockLightValue((int) _x, (int) y, (int) _z) > 7) {
+					hurt(null, 5, DamageType.GENERIC);
+					randomlySlip(16, 16, 16);
+				}
+			}
 		}
 
 		if (player != null && player.gamemode != Gamemode.creative) {
+			// A check to see if the Farlander is stared at.
+			// If it is then face the entity and set to angry.
+			// Otherwise, it teleports a random distance closer and starts a 'not looking' timer.
 			if (FarlanderUtils.isStaredAt(this, player)) {
-				angry = true;
-				faceEntity(player, 1.0F, 1.0F);
-			} else
-				if (!FarlanderUtils.isStaredAt(this, player) && angry) {
-				double diffX = player.x - this.x;
-				double diffY = player.y - this.y;
-				double diffZ = player.z - this.z;
-
+				isAngry = true;
+			} else if (!FarlanderUtils.isStaredAt(this, player) && isAngry && !dead) {
 				++ticksNotLooking;
 
-				if (soundTicks == 0) {
+				if (soundTicks-- <= 0) {
 					world.playSoundAtEntity(null, player, "farlanders.whispers", 1.0f, 1.0f);
 					soundTicks = 540;
 				}
 
-				if (teleportTime == 0) {
-					setPos(player.x - diffX * random.nextDouble(), player.y - diffY, player.z - diffZ * random.nextDouble());
-					smoke();
-					world.playSoundAtEntity(null, player, "farlanders.fwoosh", 1.0f, 1.0f);
-					teleportTime = 80;
-				}
+				double newX = random.nextFloat() * (player.x - x) + player.x;
+				double newY = y + (double) (random.nextFloat() * bbHeight);
+				double newZ = random.nextFloat() * (player.z - z) + player.z;
 
-				if (ticksNotLooking == 600) {
-					ticksNotLooking = 0;
-					angry = !angry;
+				// If the 'slip' timer hits 0 then try to spawn an item, spawn smoke particles,
+				// teleport, and then reset the timer back to 80 ticks.
+				if (slipTimer-- <= 0) {
+					smoke();
+
+					// This should only spawn the smoker if the random int is 0.
+					if (random.nextInt(6) == 0) {
+						world.playSoundAtEntity(null, this, "mob.chickenplop", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
+						spawnAtLocation(FarlandersItems.FARLANDER_SMOKER.id, 1);
+					}
+
+					setPos(newX, newY, newZ);
+					smoke();
+					world.playSoundAtEntity(null, player, "farlanders.slip", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
+					slipTimer = 80;
 				}
 			}
+
+			if (isAngry) faceEntity(player, 1.0F, 1.0F);
+		}
+
+		// A check to see if the 'ticksNotLooking' int is above or equal to 600.
+		// If it is then set angry to 0 and reset the int back to 0.
+		if (ticksNotLooking >= 600 && isAngry) {
+			ticksNotLooking = 0;
+			isAngry = false;
 		}
 	}
 
 	@Override
-	protected void damageEntity(int i, DamageType damageType) {
-		super.damageEntity(i, damageType);
+	public boolean hurt(Entity attacker, int i, DamageType type) {
+		if (super.hurt(attacker, i, type)) {
 
-		heartsHalvesLife -= i;
-		attackStrength += FarlandersConfig.cfg.getInt("Farlanders.farlanderDamage");
-		attackTime += 1;
-		if (damageType != DamageType.COMBAT)
-			return;
+			// If the damage type is 'combat'...
+			// Add to the 'new attack strength' int and set attack time to 0, or instantly.
+			// Then teleport closer to the attacker by a random amount and play whispers.
+			if (type == DamageType.COMBAT) {
+				attackStrength += FarlandersConfig.cfg.getInt("Farlanders.farlanderDamage");
+				attackTime = 0;
+			}
 
-		setPos(player.x + random.nextDouble(), player.y, player.z + random.nextDouble());
-		smoke();
-		world.playSoundAtEntity(null, player, "farlanders.fwoosh", 1.0f, 1.0f);
+			if (attacker != null && !dead) {
+				double newX = random.nextFloat() * (attacker.x - x) + attacker.x;
+				double newY = y + (double) (random.nextFloat() * bbHeight);
+				double newZ = random.nextFloat() * (attacker.z - z) + player.z;
+
+				if (random.nextInt(6) == 0) {
+					world.playSoundAtEntity(null, this, "mob.chickenplop", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
+					spawnAtLocation(FarlandersItems.FARLANDER_SMOKER.id, 1);
+				}
+
+				smoke();
+				setPos(newX, newY, newZ);
+				smoke();
+
+				world.playSoundAtEntity(null, attacker, "farlanders.slip", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
+			}
+
+            return true;
+
+        } else {
+			return false;
+		}
 	}
 
 	@Override
 	public void knockBack(Entity entity, int i, double d, double d1) {
 	}
+
     @Override
 	protected String getHurtSound() {
 		return null;
@@ -147,14 +190,14 @@ public class EntityFarlander extends EntityMonster {
 
 	@Override
 	protected Entity findPlayerToAttack() {
-		return angry ? player : null;
+		return isAngry ? player : null;
 	}
 
 	@Override
 	protected void dropFewItems() {
 		int dropRand = random.nextInt(2);
 
-		spawnAtLocation(Farlanders.itemLens.id, dropRand);
+		spawnAtLocation(FarlandersItems.FARLANDER_LENS.id, dropRand);
 	}
 
 	@Override
@@ -164,5 +207,23 @@ public class EntityFarlander extends EntityMonster {
 	@Override
 	public int getMaxSpawnedInChunk() {
 		return 2;
+	}
+
+	@Override
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
+		tag.putBoolean("IsAngry", isAngry);
+		tag.putInt("TicksNotLooking", ticksNotLooking);
+		tag.putInt("SlipTimer", slipTimer);
+		tag.putInt("RandomSlipTimer", randomSlipTimer);
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
+		isAngry = tag.getBoolean("IsAngry");
+		ticksNotLooking = tag.getInteger("TicksNotLooking");
+		slipTimer = tag.getInteger("SlipTimer");
+		randomSlipTimer = tag.getInteger("RandomSlipTimer");
 	}
 }

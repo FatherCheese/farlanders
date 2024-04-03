@@ -4,7 +4,6 @@
     "type": "minecraft:crafting/shaped",
     "pattern": [
       "111",
-      "1 1",
       "2 2"
     ],
     "symbols": [

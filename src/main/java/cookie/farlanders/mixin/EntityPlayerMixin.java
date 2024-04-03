@@ -1,7 +1,10 @@
 package cookie.farlanders.mixin;
 
+import cookie.farlanders.Farlanders;
+import cookie.farlanders.item.FarlandersItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.entity.Entity;
+import net.minecraft.core.entity.EntityLiving;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.inventory.InventoryPlayer;
 import net.minecraft.core.world.World;
@@ -11,17 +14,14 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import cookie.farlanders.Farlanders;
+
+import java.util.List;
 
 @Mixin(value = EntityPlayer.class, remap = false)
-public abstract class EntityPlayerMixin extends Entity {
+public abstract class EntityPlayerMixin extends EntityLiving {
 
 	@Unique
-	private boolean toggledFullBright = false;
-	@Unique
 	private int durabilityTimer = 0;
-	@Unique
-	private Boolean gameFullBright = null;
 
 	@Shadow
 	public final InventoryPlayer inventory = new InventoryPlayer((EntityPlayer)(Object)this);
@@ -31,50 +31,32 @@ public abstract class EntityPlayerMixin extends Entity {
 	}
 
 	@Unique
-	public boolean hasNightVision() {
-		return inventory.armorInventory[3] != null && inventory.armorInventory[3].itemID == Farlanders.itemArmorGoggles.id;
+	public boolean hasSonar() {
+		return inventory.armorInventory[3] != null && inventory.armorInventory[3].itemID == FarlandersItems.FARLANDER_GOGGLES.id;
 	}
 
 	@Inject(method = "onLivingUpdate", at = @At("TAIL"))
 	private void farlanders_nightVision(CallbackInfo ci) {
 		if (!world.isClientSide){
-			durabilityTimer++;
-			if (hasNightVision()){
-				if (durabilityTimer > 100) {
-					durabilityTimer = 0;
-					inventory.damageArmor(1, 3);
-				}
-			}
+            if (hasSonar() && durabilityTimer++ >= 100) {
+                durabilityTimer = 0;
+                inventory.damageArmor(1, 3);
+            }
 		}
 
-		Minecraft mc = Minecraft.getMinecraft(this);
-		if (mc != null){
-			if (gameFullBright == null){
-				gameFullBright = mc.fullbright;
-			}
-			if (hasNightVision()){
-				if (!toggledFullBright && mc.fullbright)
-					gameFullBright = true;
-
-				if (!toggledFullBright) {
-					if (!mc.fullbright) {
-						mc.fullbright = true;
-						mc.renderGlobal.loadRenderers();
+		Minecraft mc = Minecraft.getMinecraft(Minecraft.class);
+		if (mc != null) {
+			List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(32.0F, 16.0F, 32.0F));
+			if (!list.isEmpty()) {
+                for (Entity entity : list) {
+					if (hasSonar()) {
+						if (entity instanceof EntityLiving) {
+							entity.entityBrightness = 1.0f;
+						}
+					} else {
+						entity.entityBrightness = 0.0f;
 					}
-					toggledFullBright = true;
-				}
-
-				if (!mc.fullbright) {
-					gameFullBright = !gameFullBright;
-					mc.fullbright = true;
-					mc.renderGlobal.loadRenderers();
-				}
-			} else {
-				if (toggledFullBright) {
-					mc.fullbright = gameFullBright;
-					toggledFullBright = false;
-					mc.renderGlobal.loadRenderers();
-				}
+                }
 			}
 		}
 	}
