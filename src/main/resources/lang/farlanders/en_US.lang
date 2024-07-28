@@ -1,5 +1,5 @@
 item.farlanders.farlander_smoker.name=Farlander Smoker
 item.farlanders.farlander_smoker.desc=Smells of ash and looks like bubbling liquid smoke.
 
-tile.farlanders.smoker.name=Smoker
+tile.farlanders.smoker.name=Smoke
 tile.farlanders.smoker.desc=Creates a harmless smoke that flows harmlessly into the sky. Harmlessly.
