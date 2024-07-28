@@ -21,7 +21,7 @@ public class BiomeMixin {
 
 	@Inject(method = "<init>", remap = false, at = @At("TAIL"))
 	private void farlanders_addMobs(CallbackInfo ci) {
-		if (FarlandersConfig.cfg.getBoolean("Farlanders.enableEntities")){
+		if (FarlandersConfig.cfg.getBoolean("Farlanders.enableEntities")) {
 			spawnableMonsterList.add(new SpawnListEntry(FarlanderEntity.class, 1));
 			spawnableMonsterList.add(new SpawnListEntry(EyesEntity.class, 1));
 		}
