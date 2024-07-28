@@ -1,13 +1,13 @@
 {
-  "schemaVersion": 1,
-  "id": "farlanders",
-  "version": "${version}",
+	"schemaVersion": 1,
+	"id": "farlanders",
+	"version": "${version}",
 
-  "name": "Farlanders",
-  "description": "This mod adds new monsters to scare you.",
-  "authors": [
+	"name": "Farlanders",
+	"description": "This mod adds new monsters to scare you.",
+	"authors": [
 		"Cookie Cakes"
-  ],
+	],
 	"contributors": [
 		"Apollo",
 		"Scaldings",
@@ -15,40 +15,34 @@
 		"Useless"
 	],
 	"contact": {
-    "homepage": "",
-    "sources": ""
-  },
+		"homepage": "",
+		"sources": ""
+	},
 
 	"icon": "assets/farlanders/icon.png",
-  "license": "CC0-1.0",
+	"license": "CC0-1.0",
 
-  "environment": "*",
-  "entrypoints": {
-		"main": [
-			"cookie.farlanders.Farlanders"
-		],
-    "beforeGameStart": [
-			"cookie.farlanders.Farlanders"
-    ],
-		"beforeClientStart": [
+	"environment": "*",
+	"entrypoints": {
+		"beforeGameStart": [
 			"cookie.farlanders.Farlanders"
 		],
 		"recipesReady": [
-			"cookie.farlanders.entity.crafting.FarlandersRecipes"
+          "cookie.farlanders.core.FarlandersRecipes"
 		],
 		"spawneggs": [
-			"cookie.farlanders.SpawnEggsPlugin"
+			"cookie.farlanders.extra.SpawnEggsPlugin"
 		]
-  },
-  "mixins": [
-    "farlanders.mixins.json"
-  ],
+	},
+	"mixins": [
+		"farlanders.mixins.json"
+	],
 
-  "depends": {
-    "fabricloader": ">=0.13.3",
+	"depends": {
+		"fabricloader": ">=0.13.3",
 		"halplibe": ">=3.1.0",
 		"dragonfly": ">=0.4.0"
-  },
-  "suggests": {
-  }
+	},
+	"suggests": {
+	}
 }

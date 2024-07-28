@@ -1,21 +1,23 @@
-package cookie.farlanders.entity;
+package cookie.farlanders.core.entity;
 
+import cookie.farlanders.Farlanders;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntityMonster;
 import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.util.collection.NamespaceID;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.type.WorldTypes;
-import cookie.farlanders.util.FarlanderUtils;
+import cookie.farlanders.extra.FarlanderUtils;
 
-public class EntityEyes extends EntityMonster {
+public class EyesEntity extends EntityMonster {
 	private int stareTimer = 0;
 	private int soundTimer = 0;
 	private boolean found = false;
 
-	public EntityEyes(World world) {
+	public EyesEntity(World world) {
 		super(world);
-		skinName = "eyes";
+		textureIdentifier = new NamespaceID(Farlanders.MOD_ID, "eyes");
 		scoreValue = 0;
 		setSize(1.4f, 1.4f);
 		heartsHalvesLife = 1;
@@ -30,7 +32,7 @@ public class EntityEyes extends EntityMonster {
 		EntityPlayer player = world.getClosestPlayerToEntity(this, 16.0);
 
 		if (player != null) {
-			faceEntity(player, 1.0F, 1.0F);
+			faceEntity(player, 30.0F, 30.0F);
 
 			if (found) ++stareTimer;
 
@@ -42,8 +44,7 @@ public class EntityEyes extends EntityMonster {
 					soundTimer = 1;
 				}
 
-				if (stareTimer > 25)
-					this.remove();
+				if (stareTimer > 15) this.remove();
 			}
 		}
 	}

@@ -1,8 +1,9 @@
-package cookie.farlanders.entity.render;
+package cookie.farlanders.client.render;
 
-import useless.dragonfly.model.entity.BenchEntityModel;
 
-public class ModelEyes extends BenchEntityModel {
+import org.useless.dragonfly.model.entity.BenchEntityModel;
+
+public class EyesModel extends BenchEntityModel {
 
 	@Override
 	public void setRotationAngles(float limbSwing, float limbYaw, float ticksExisted, float headYaw, float headPitch, float scale) {

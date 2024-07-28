@@ -1,5 +1,5 @@
-item.farlanders.lens.name=Farlander Lens
-item.farlanders.lens.desc=It softly glows in your hands.
+item.farlanders.farlander_smoker.name=Farlander Smoker
+item.farlanders.farlander_smoker.desc=Smells of ash and looks like bubbling liquid smoke.
 
-item.farlanders.armor.helmet.goggles.name=Farlander Goggles
-item.farlanders.armor.helmet.goggles.desc=A nifty pair of goggles. It seems to make mobs glow in front of your very eyes!
+tile.farlanders.smoker.name=Smoker
+tile.farlanders.smoker.desc=Creates a harmless smoke that flows harmlessly into the sky. Harmlessly.

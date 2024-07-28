@@ -16,9 +16,8 @@ public class FarlandersConfig {
 			.addEntry("farlanderDamage", "Damage is plus the number based on their health. Default is 2.", 2);
 
 		properties.addCategory("IDs")
-			.addEntry("farlanderLens", 16600)
-			.addEntry("farlanderGoggles", 16601)
-			.addEntry("farlanderSmoker", 16602);
+			.addEntry("startingItemID", 16600)
+			.addEntry("startingBlockID", 1100);
 
 		cfg = new TomlConfigHandler(Farlanders.MOD_ID, properties);
 	}

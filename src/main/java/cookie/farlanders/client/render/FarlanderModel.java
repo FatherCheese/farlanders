@@ -1,9 +1,9 @@
-package cookie.farlanders.entity.render;
+package cookie.farlanders.client.render;
 
 import net.minecraft.core.util.helper.MathHelper;
-import useless.dragonfly.model.entity.BenchEntityModel;
+import org.useless.dragonfly.model.entity.BenchEntityModel;
 
-public class ModelFarlander extends BenchEntityModel {
+public class FarlanderModel extends BenchEntityModel {
 
 	@Override
 	public void setRotationAngles(float limbSwing, float limbYaw, float ticksExisted, float headYaw, float headPitch, float scale) {

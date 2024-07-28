@@ -1,4 +1,4 @@
-package cookie.farlanders.util;
+package cookie.farlanders.extra;
 
 import net.minecraft.core.entity.EntityLiving;
 import net.minecraft.core.entity.player.EntityPlayer;

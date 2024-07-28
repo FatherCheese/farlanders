@@ -1,17 +1,19 @@
-package cookie.farlanders.entity;
+package cookie.farlanders.core.entity;
 
 import com.mojang.nbt.CompoundTag;
+import cookie.farlanders.Farlanders;
 import cookie.farlanders.FarlandersConfig;
-import cookie.farlanders.item.FarlandersItems;
-import cookie.farlanders.util.FarlanderUtils;
+import cookie.farlanders.core.FarlandersItems;
+import cookie.farlanders.extra.FarlanderUtils;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntityMonster;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.gamemode.Gamemode;
+import net.minecraft.core.util.collection.NamespaceID;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
 
-public class EntityFarlander extends EntityMonster {
+public class FarlanderEntity extends EntityMonster {
 	private EntityPlayer player;
 	private boolean isAngry = false;
 	private int soundTicks;
@@ -19,9 +21,9 @@ public class EntityFarlander extends EntityMonster {
 	private int slipTimer;
 	private int randomSlipTimer;
 
-	public EntityFarlander(World world) {
+	public FarlanderEntity(World world) {
 		super(world);
-		skinName = "farlander";
+		textureIdentifier = new NamespaceID(Farlanders.MOD_ID, "farlander");
 		scoreValue = 1000;
 		setSize(0.6f, 2.5f);
 		heartsHalvesLife = FarlandersConfig.cfg.getInt("Farlanders.farlanderHealth");
@@ -41,7 +43,8 @@ public class EntityFarlander extends EntityMonster {
 				z + (double)(random.nextFloat() * bbWidth * 2.0F) - (double)bbWidth,
 				motX,
 				motY,
-				motZ
+				motZ,
+				0
 			);
 		}
 	}
@@ -60,7 +63,7 @@ public class EntityFarlander extends EntityMonster {
 				randZ = (int) (random.nextInt(randPosZ) + this.z);
 
 				if (randY < 80 && world.isAirBlock(randX, (int) (randY + bb.minY), randZ) && !(world.getBlockLightValue(randX, randY, randZ) > 7)) {
-					world.playSoundAtEntity(null, this, "farlanders.slip", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
+					world.playSoundAtEntity(player, this, "farlanders.slip", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
 					smoke();
 					setPos(randX, randY, randZ);
 					smoke();
@@ -81,7 +84,7 @@ public class EntityFarlander extends EntityMonster {
 		}
 
 		// Checks the light level in a 3x3 area around the Farlander.
-		// If it's above light level 7 then do damage and randomly teleport.
+		// If it's above light level 7 then do damage and randomly slip away.
 		for (double _x = x - 1; _x <= x + 1; _x++) {
 			for (double _z = z - 1; _z <= z + 1; _z++) {
 				if (world.getBlockLightValue((int) _x, (int) y, (int) _z) > 7) {
@@ -101,7 +104,7 @@ public class EntityFarlander extends EntityMonster {
 				++ticksNotLooking;
 
 				if (soundTicks-- <= 0) {
-					world.playSoundAtEntity(null, player, "farlanders.whispers", 1.0f, 1.0f);
+					world.playSoundAtEntity(player, player, "farlanders.whispers", 1.0f, 1.0f);
 					soundTicks = 540;
 				}
 
@@ -115,19 +118,19 @@ public class EntityFarlander extends EntityMonster {
 					smoke();
 
 					// This should only spawn the smoker if the random int is 0.
-					if (random.nextInt(6) == 0) {
+					if (random.nextInt(12) == 0) {
 						world.playSoundAtEntity(null, this, "mob.chickenplop", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
 						spawnAtLocation(FarlandersItems.FARLANDER_SMOKER.id, 1);
 					}
 
 					setPos(newX, newY, newZ);
 					smoke();
-					world.playSoundAtEntity(null, player, "farlanders.slip", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
+					world.playSoundAtEntity(player, player, "farlanders.slip", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
 					slipTimer = 80;
 				}
 			}
 
-			if (isAngry) faceEntity(player, 1.0F, 1.0F);
+			if (isAngry) faceEntity(player, 30.0F, 30.0F);
 		}
 
 		// A check to see if the 'ticksNotLooking' int is above or equal to 600.
@@ -136,6 +139,10 @@ public class EntityFarlander extends EntityMonster {
 			ticksNotLooking = 0;
 			isAngry = false;
 		}
+
+		// Stuck prevention, in-case they slip into blocks.
+		if (world.getBlock((int) x, (int) bb.minY, (int) z) != null && world.isBlockOpaqueCube((int) x, (int) bb.minY, (int) z))
+			setPos(x, bb.minY + 1, z);
 	}
 
 	@Override
@@ -156,7 +163,7 @@ public class EntityFarlander extends EntityMonster {
 				double newZ = random.nextFloat() * (attacker.z - z) + player.z;
 
 				if (random.nextInt(6) == 0) {
-					world.playSoundAtEntity(null, this, "mob.chickenplop", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
+					world.playSoundAtEntity(player, this, "mob.chickenplop", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
 					spawnAtLocation(FarlandersItems.FARLANDER_SMOKER.id, 1);
 				}
 
@@ -164,7 +171,7 @@ public class EntityFarlander extends EntityMonster {
 				setPos(newX, newY, newZ);
 				smoke();
 
-				world.playSoundAtEntity(null, attacker, "farlanders.slip", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
+				world.playSoundAtEntity(player, attacker, "farlanders.slip", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
 			}
 
             return true;
@@ -191,13 +198,6 @@ public class EntityFarlander extends EntityMonster {
 	@Override
 	protected Entity findPlayerToAttack() {
 		return isAngry ? player : null;
-	}
-
-	@Override
-	protected void dropFewItems() {
-		int dropRand = random.nextInt(2);
-
-		spawnAtLocation(FarlandersItems.FARLANDER_LENS.id, dropRand);
 	}
 
 	@Override
