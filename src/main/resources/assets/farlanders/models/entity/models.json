@@ -1,0 +1,14 @@
+{
+  "model_paths": [
+    "/assets/farlanders/models/entity/eyes/eyes.json",
+    "/assets/farlanders/models/entity/farlander/farlander.json"
+  ],
+  "renderers": {
+    "farlanders:eyes": {
+      "main": "geometry.eyes"
+    },
+    "farlanders:farlander": {
+      "main": "geometry.farlander"
+    }
+  }
+}

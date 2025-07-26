@@ -27,28 +27,28 @@
 				},
 				{
 					"name": "armLeft",
-					"pivot": [-4, 36, 0],
+					"pivot": [4, 36, 0],
 					"cubes": [
 						{"origin": [4, 12, -1], "size": [2, 24, 2], "uv": [32, 6]}
 					]
 				},
 				{
 					"name": "armRight",
-					"pivot": [4, 36, 0],
+					"pivot": [-4, 36, 0],
 					"cubes": [
 						{"origin": [-6, 12, -1], "size": [2, 24, 2], "uv": [32, 6]}
 					]
 				},
 				{
 					"name": "legLeft",
-					"pivot": [-2, 24, 0],
+					"pivot": [2, 24, 0],
 					"cubes": [
 						{"origin": [1, 0, -1], "size": [2, 24, 2], "uv": [40, 6]}
 					]
 				},
 				{
 					"name": "legRight",
-					"pivot": [2, 24, 0],
+					"pivot": [-2, 24, 0],
 					"cubes": [
 						{"origin": [-3, 0, -1], "size": [2, 24, 2], "uv": [40, 6]}
 					]

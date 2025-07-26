@@ -1,35 +1,29 @@
 package cookie.farlanders.extra;
 
-import net.minecraft.core.entity.EntityLiving;
-import net.minecraft.core.entity.player.EntityPlayer;
-import net.minecraft.core.util.phys.Vec3d;
-import net.minecraft.core.world.World;
+import net.minecraft.core.entity.Mob;
+import net.minecraft.core.entity.player.Player;
+import net.minecraft.core.util.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class FarlanderUtils {
 
-	public static double calculateDotProduct(Vec3d vec1, Vec3d vec2) {
-		return vec1.xCoord * vec2.xCoord + vec1.yCoord * vec2.yCoord + vec1.zCoord * vec2.zCoord;
+	public static double calculateDotProduct(@NotNull Vec3 vec1, @NotNull Vec3 vec2) {
+		return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
 	}
 
-	public static boolean isValidTPPos(World world, int x, int y, int z) {
-		return !world.isAirBlock(x, y - 1, z);
+	public static boolean isStaredAt(Mob mob, Player player) {
+        if (player == null) return false;
+
+		Vec3 playerLookDirection = player.getViewVector(1.0f).normalize();
+		Vec3 entityToPlayerDirection = Vec3.getTempVec3(mob.x - player.x,
+			mob.bb.minY + (double) mob.bbHeight - player.y + (double) player.cameraPitch,
+			mob.z - player.z);
+
+		double entityToPlayerDistance = entityToPlayerDirection.length();
+
+		double angleBetweenDirections = FarlanderUtils.calculateDotProduct(playerLookDirection, entityToPlayerDirection);
+		double thresholdAngles = 1.0 - 0.025 / entityToPlayerDistance;
+
+		return angleBetweenDirections > thresholdAngles && player.canEntityBeSeen(mob);
 	}
-
-	public static boolean isStaredAt(EntityLiving entity, EntityPlayer player) {
-        if (player == null)
-			return false;
-        else {
-            Vec3d playerLookDirection = player.getViewVector(1.0f).normalize();
-            Vec3d entityToPlayerDirection = Vec3d.createVector(entity.x - player.x,
-                entity.bb.minY + (double) entity.bbHeight - player.y + (double) player.cameraPitch,
-                entity.z - player.z);
-
-            double entityToPlayerDistance = entityToPlayerDirection.lengthVector();
-
-            double angleBetweenDirections = FarlanderUtils.calculateDotProduct(playerLookDirection, entityToPlayerDirection);
-            double thresholdAngles = 1.0d - 0.025d / entityToPlayerDistance;
-
-            return angleBetweenDirections > thresholdAngles && player.canEntityBeSeen(entity);
-        }
-    }
 }

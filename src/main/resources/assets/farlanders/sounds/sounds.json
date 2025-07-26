@@ -1,0 +1,14 @@
+{
+  "mob.farlander.slip": {
+    "subtitle": "subtitles.mob.farlander.slip",
+    "sounds": [
+      "mob/farlander/slip.wav"
+    ]
+  },
+  "mob.farlander.whispering": {
+    "subtitle": "subtitles.mob.farlander.whispering",
+    "sounds": [
+      "mob/farlander/whispers.wav"
+    ]
+  }
+}

@@ -1,5 +1,19 @@
-item.farlanders.farlander_smoker.name=Farlander Smoker
-item.farlanders.farlander_smoker.desc=Smells of ash and looks like bubbling liquid smoke.
+# ITEM #
+item.farlanders.lens.name=Farlander Lens
+item.farlanders.lens.desc=A thin glowing eye. You swear it blinked at you...
+item.farlanders.pearl.name=Farlander Pearl
+item.farlanders.pearl.desc=A small black pearl. It has a slight blue shine to it.
+item.farlanders.armor.helmet.goggles.name=Goggles
+item.farlanders.armor.helmet.goggles.desc=A pair of golden goggles made with some glowing lens, allows seeing in the dark and shows mobs.
 
+# TILE #
 tile.farlanders.smoker.name=Smoke
 tile.farlanders.smoker.desc=Creates a harmless smoke that flows harmlessly into the sky. Harmlessly.
+
+# SUBTITLES #
+subtitles.mob.farlander.slip = Farlander slip
+subtitles.mob.farlander.whispering = Farlander whispers
+
+# GUIDEBOOK #
+farlanders.guidebook.section.mob.farlander.name = Farlander
+farlanders.guidebook.section.mob.farlander.desc = Their lens can be used for goggles that can see through walls, and their pearls can be used for transportation and smoke.

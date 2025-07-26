@@ -4,9 +4,11 @@
   "package": "cookie.farlanders.extra.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "BiomeMixin"
+    "BiomeMixin",
+    "PlayerMixin"
   ],
   "client": [
+    "MobRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

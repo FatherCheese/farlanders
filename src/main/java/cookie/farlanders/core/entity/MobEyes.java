@@ -1,23 +1,23 @@
 package cookie.farlanders.core.entity;
 
-import cookie.farlanders.Farlanders;
+import cookie.farlanders.core.Farlanders;
 import net.minecraft.core.entity.Entity;
-import net.minecraft.core.entity.monster.EntityMonster;
-import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.entity.monster.MobMonster;
+import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.util.collection.NamespaceID;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.type.WorldTypes;
 import cookie.farlanders.extra.FarlanderUtils;
 
-public class EyesEntity extends EntityMonster {
+public class MobEyes extends MobMonster {
 	private int stareTimer = 0;
 	private int soundTimer = 0;
 	private boolean found = false;
 
-	public EyesEntity(World world) {
+	public MobEyes(World world) {
 		super(world);
-		textureIdentifier = new NamespaceID(Farlanders.MOD_ID, "eyes");
+		textureIdentifier = NamespaceID.getPermanent(Farlanders.MOD_ID, "eyes");
 		scoreValue = 0;
 		setSize(1.4f, 1.4f);
 		heartsHalvesLife = 1;
@@ -29,10 +29,11 @@ public class EyesEntity extends EntityMonster {
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 
-		EntityPlayer player = world.getClosestPlayerToEntity(this, 16.0);
+		if (world == null || world.isClientSide) return;
 
+		Player player = world.getClosestPlayerToEntity(this, 16.0);
 		if (player != null) {
-			faceEntity(player, 30.0F, 30.0F);
+			lookAt(player, 30.0F, 30.0F);
 
 			if (found) ++stareTimer;
 
@@ -50,6 +51,8 @@ public class EyesEntity extends EntityMonster {
 	}
 
 	private boolean validWorldType() {
+		if (world == null || world.isClientSide) return false;
+
         return world.worldType != WorldTypes.FLAT ||
 			world.worldType != WorldTypes.EMPTY ||
 			world.worldType != WorldTypes.PARADISE_DEFAULT;
@@ -60,9 +63,10 @@ public class EyesEntity extends EntityMonster {
 		return null;
 	}
 
+
 	@Override
-	public boolean getCanSpawnHere() {
-		return super.getCanSpawnHere() && validWorldType() && !(y <= (double) world.getHeightBlocks() / 3);
+	public boolean canSpawnHere() {
+		return super.canSpawnHere() && validWorldType() && !(y <= (double) world.getHeightBlocks() / 3);
 	}
     @Override
 	protected String getHurtSound() {

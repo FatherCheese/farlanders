@@ -3,17 +3,18 @@
 An alternate timeline variant of the Enderman, to scare your socks off!
 
 ## Prerequisites
-- Java 17 ([Eclipse Temurin](https://adoptium.net/temurin/releases/) recommended)
-- HalpLibe 2.5.0 or above (https://github.com/Turnip-Labs/bta-halplibe)
-- Dragonfly 0.1.1 (https://github.com/UselessBullets/DragonFly)
+- [HalpLibe 2.5.4](<https://github.com/Turnip-Labs/bta-halplibe/releases/tag/5.2.4>)
+- [DragonFly 1.7.0-alpha.5](<https://github.com/UselessSolutions/DragonFly/releases/tag/v1.7.0-alpha.5>)
 
 ## Setup instructions
    
 
 1. Download the BTA Babric Instance from the Turnip Labs GitHub. (https://github.com/Turnip-Labs/babric-instance-repo)
 
-2. Update HalpLibe to 2.5.0 or above in the Babric instance.
+2. Download Dragonfly and put it in the mods folder or MultiMC/Prism mods tab.
 
-3. Download this mod from the BTA modding site (https://bta-modding.nouma-vallee.fr/mods/) or from the releases tab.
+3. Make sure HalpLibe is up to date.
 
-4. Plug the jar file into the client or server's Mods folder or MultiMC/Prism Launcher tab. Have fun!
+4. Download this mod from [Modrinth] or from the releases tab.
+
+5. Plug the jar file into the client or server's Mods folder or MultiMC/Prism Launcher tab. Have fun!
