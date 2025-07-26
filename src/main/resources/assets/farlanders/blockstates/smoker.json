@@ -1,0 +1,52 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "farlanders:block/smoker/smoker_bottom"
+      },
+      "when": {
+        "side": "bottom"
+      }
+    },
+    {
+      "apply": {
+        "model": "farlanders:block/smoker/smoker_top"
+      },
+      "when": {
+        "side": "top"
+      }
+    },
+    {
+      "apply": {
+        "model": "farlanders:block/smoker/smoker_north"
+      },
+      "when": {
+        "side": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "farlanders:block/smoker/smoker_south"
+      },
+      "when": {
+        "side": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "farlanders:block/smoker/smoker_west"
+      },
+      "when": {
+        "side": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "farlanders:block/smoker/smoker_east"
+      },
+      "when": {
+        "side": "east"
+      }
+    }
+  ]
+}

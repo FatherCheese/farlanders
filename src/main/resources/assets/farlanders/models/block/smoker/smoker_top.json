@@ -1,0 +1,25 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "farlanders:block/smoker_bottom",
+		"1": "farlanders:block/smoker_side",
+		"2": "farlanders:block/smoker_top",
+		"particle": "farlanders:block/smoker_bottom"
+	},
+	"elements": [
+		{
+			"from": [0, 13, 0],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "x", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 13, 16, 16], "rotation": 180, "texture": "#1"},
+				"east": {"uv": [0, 13, 16, 16], "rotation": 180, "texture": "#1"},
+				"south": {"uv": [0, 13, 16, 16], "rotation": 180, "texture": "#1"},
+				"west": {"uv": [0, 13, 16, 16], "rotation": 180, "texture": "#1"},
+				"up": {"uv": [0, 0, 16, 16], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [0, 0, 16, 16], "rotation": 180, "texture": "#2"}
+			}
+		}
+	]
+}

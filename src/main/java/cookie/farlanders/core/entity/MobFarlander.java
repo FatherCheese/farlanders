@@ -11,6 +11,7 @@ import net.minecraft.core.entity.monster.MobMonster;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.util.collection.NamespaceID;
 import net.minecraft.core.util.helper.DamageType;
+import net.minecraft.core.util.helper.MathHelper;
 import net.minecraft.core.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,11 +64,11 @@ public class MobFarlander extends MobMonster {
 		// Check 5 times for a valid position
 		if (!dead) {
 			for (int i = 0; i < 5; i++) {
-				randX = (int) (random.nextInt(randPosX) + this.x);
-				randY = (int) (random.nextInt(randPosY) + this.y);
-				randZ = (int) (random.nextInt(randPosZ) + this.z);
+				randX = random.nextInt(randPosX) + MathHelper.floor(this.x);
+				randY = random.nextInt(randPosY) + MathHelper.floor(this.y);
+				randZ = random.nextInt(randPosZ) + MathHelper.floor(this.z);
 
-				if (randY < 80 && world.isAirBlock(randX, (int) (randY + bb.minY), randZ) && !(world.getBlockLightValue(randX, randY, randZ) > 7)) {
+				if (randY < 80 && world.isAirBlock(randX, MathHelper.floor(randY + bb.minY), randZ) && !(world.getBlockLightValue(randX, randY, randZ) > 7)) {
 					world.playSoundAtEntity(player, this, "farlanders:mob.farlander.slip", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
 					smoke();
 					setPos(randX, randY, randZ);
@@ -82,7 +83,7 @@ public class MobFarlander extends MobMonster {
 		super.onLivingUpdate();
 
 		if (world == null || world.isClientSide) return;
-		player = world.getClosestPlayerToEntity(this, 32.0);
+		player = world.getClosestPlayerToEntity(this, 64.0);
 
 		// If it isn't angry and the random teleport timer surpasses 600, reset timer and slip away randomly.
 		if (!isAngry && randomSlipTimer++ >= 600) {
@@ -94,14 +95,19 @@ public class MobFarlander extends MobMonster {
 		// If it's above light level 7, then do damage and randomly slip away.
 		for (double _x = x - 1; _x <= x + 1; _x++) {
 			for (double _z = z - 1; _z <= z + 1; _z++) {
-				if (world.getBlockLightValue((int) _x, (int) y, (int) _z) > 7) {
+				if (world.getBlockLightValue(MathHelper.floor(_x), MathHelper.floor(y), MathHelper.floor(_z)) > 7) {
 					hurt(null, 5, DamageType.GENERIC);
 					randomlySlip(16, 16, 16);
 				}
 			}
 		}
 
-		if ((player != null && target != null) && player.gamemode.areMobsHostile()) {
+		if ((player != null) && player.gamemode.areMobsHostile()) {
+			if (isAngry) {
+				lookAt(player, 30.0F, 30.0F);
+				setTarget(player);
+			}
+
 			// A check to see if the Farlander is stared at.
 			// If it is, then face the entity and set to angry.
 			// Otherwise, it teleports a random distance closer and starts a 'not looking' timer.
@@ -109,23 +115,18 @@ public class MobFarlander extends MobMonster {
 			else if (!FarlanderUtils.isStaredAt(this, player) && isAngry && !dead) {
 				++ticksNotLooking;
 
-				if (soundTicks-- <= 0) {
+				if (soundTicks <= 0) {
 					world.playSoundAtEntity(player, player, "farlanders:mob.farlander.whispering", 1.0f, 1.0f);
-					soundTicks = 450;
-				}
-
-				if (distanceToSqr(target) <= 24.0) {
-					target.hurt(this, 3, DamageType.COMBAT);
-					attackTime = 20;
+					soundTicks = 540;
 				}
 
 				double newX = (x + player.x) / 2.0;
-				double newY = y + (double) (random.nextFloat() * bbHeight);
 				double newZ = (z + player.z) / 2.0;
+				double newY = world.getHeightValue(MathHelper.floor(newX), MathHelper.floor(newZ)) + 0.5;
 
 				// If the 'slip' timer hits 0, then this tries to spawn an item, spawn smoke particles,
 				// teleport, and then reset the timer back to 80 ticks.
-				if (slipTimer-- <= 0) {
+				if (slipTimer <= 0) {
 					smoke();
 
 					// This should only spawn pearls if the random int is 0.
@@ -136,22 +137,30 @@ public class MobFarlander extends MobMonster {
 					setPos(newX, newY, newZ);
 					smoke();
 					world.playSoundAtEntity(player, player, "farlanders:mob.farlander.slip", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);
-					slipTimer = 60;
+					slipTimer = 30;
 				}
 			}
-
-			if (isAngry) lookAt(player, 30.0F, 30.0F);
 		}
 
 		// A check to see if the 'ticksNotLooking' int is above or equal to 600.
 		// If it is, then set angry to 0 and reset the int back to 0.
-		if (ticksNotLooking >= 600 && isAngry && distanceToSqr(target) >= 256.0) {
-			ticksNotLooking = 0;
-			isAngry = false;
+		if (target != null) {
+			if (slipTimer > 0) slipTimer--;
+			if (soundTicks > 0) soundTicks--;
+
+			if (distanceToSqr(target) <= 8.0) {
+				target.hurt(this, 3, DamageType.COMBAT);
+				attackTime = 20;
+			}
+
+			if (ticksNotLooking >= 600 && isAngry && distanceToSqr(target) >= 256.0) {
+				ticksNotLooking = 0;
+				isAngry = false;
+			}
 		}
 
 		// Stuck prevention, in case they slip into blocks.
-		if (world.getBlock((int) x, (int) bb.minY, (int) z) != null && world.isBlockOpaqueCube((int) x, (int) bb.minY, (int) z))
+		if (world.getBlock(MathHelper.floor(x), MathHelper.floor(bb.minY + bb.maxY), MathHelper.floor(z)) != null)
 			setPos(x, bb.minY + 1, z);
 	}
 
@@ -161,17 +170,15 @@ public class MobFarlander extends MobMonster {
 		if (super.hurt(attacker, i, type)) {
 
 			// If the damage type is 'combat'...
-			// Add to the 'new attack strength' int and set attack time to 0, or instantly.
 			// Then teleport closer to the attacker by a random amount and play whispers.
 			if (type == DamageType.COMBAT) {
 				attackStrength += FarlandersConfig.cfg.getInt("Farlanders.farlanderDamage");
-				attackTime = 0;
 			}
 
 			if (attacker != null && !dead) {
 				double newX = random.nextFloat() * (attacker.x - x) + attacker.x;
-				double newY = y + (double) (random.nextFloat() * bbHeight);
 				double newZ = random.nextFloat() * (attacker.z - z) + player.z;
+				double newY = world.getHeightValue(MathHelper.floor(newX), MathHelper.floor(newZ)) + 0.5;
 
 				if (random.nextInt(8) == 0) {
 					world.playSoundAtEntity(player, this, "mob.chickenplop", 1.0f, (random.nextFloat() - random.nextFloat()) * 0.2f - 1.0f);

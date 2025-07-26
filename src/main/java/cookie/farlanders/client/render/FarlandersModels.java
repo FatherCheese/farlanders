@@ -3,6 +3,7 @@ package cookie.farlanders.client.render;
 import cookie.farlanders.client.render.entity.MobRendererEyes;
 import cookie.farlanders.client.render.entity.MobRendererFarlander;
 import cookie.farlanders.core.Farlanders;
+import cookie.farlanders.core.block.state.SmokerMetaState;
 import cookie.farlanders.core.entity.ProjectileFarlanderPearl;
 import cookie.farlanders.core.item.FarlandersItems;
 import cookie.farlanders.core.block.FarlandersBlocks;
@@ -27,7 +28,9 @@ public class FarlandersModels implements ModelEntrypoint {
 
 	@Override
 	public void initBlockModels(BlockModelDispatcher blockModelDispatcher) {
-		ModelHelper.setBlockModel(FarlandersBlocks.SMOKER, () -> new BlockModelDFJava<>(FarlandersBlocks.SMOKER, DragonFly.loadBlockModel("farlanders:block/smoker")));
+		ModelHelper.setBlockModel(FarlandersBlocks.SMOKER, () -> new BlockModelDFJava<>(FarlandersBlocks.SMOKER, DragonFly.loadBlockModel("farlanders:block/smoker/smoker_bottom"))
+			.setStateInterpreter(new SmokerMetaState())
+			.setStateData("farlanders:smoker"));
 	}
 
 	@Override
